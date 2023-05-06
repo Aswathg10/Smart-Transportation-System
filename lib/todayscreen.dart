@@ -397,7 +397,7 @@ class _TodayScreenState extends State<TodayScreen> {
                               'date': Timestamp.now(),
                               'checkIn': checkIn,
                               'checkOut': DateFormat('hh:mm').format(DateTime.now()),
-                              'checkInLocation': location,
+                              'checkOutLocation': location,
                             });
                           } catch (e) {
                             setState(() {
@@ -413,7 +413,7 @@ class _TodayScreenState extends State<TodayScreen> {
                               'date': Timestamp.now(),
                               'checkIn': DateFormat('hh:mm').format(DateTime.now()),
                               'checkOut': "--/--",
-                              'checkOutLocation': location,
+                              'checkInLocation': location,
                             });
                           }
 
@@ -450,7 +450,7 @@ class _TodayScreenState extends State<TodayScreen> {
                                 'date': Timestamp.now(),
                                 'checkIn': checkIn,
                                 'checkOut': DateFormat('hh:mm').format(DateTime.now()),
-                                'checkInLocation': location,
+                                'checkOutLocation': location,
                               });
                             } catch (e) {
                               setState(() {
@@ -466,7 +466,7 @@ class _TodayScreenState extends State<TodayScreen> {
                                 'date': Timestamp.now(),
                                 'checkIn': DateFormat('hh:mm').format(DateTime.now()),
                                 'checkOut': "--/--",
-                                'checkOutLocation': location,
+                                'checkInLocation': location,
                               });
                             }
 
