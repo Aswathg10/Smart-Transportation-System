@@ -464,7 +464,7 @@ class _TodayScreenState extends State<TodayScreen> {
                                   .doc(DateFormat('dd MMMM yyyy').format(DateTime.now()))
                                   .set({
                                 'date': Timestamp.now(),
-                                'checkIn': DateFormat('hh:mm').format(DateTime.now()),
+                                'checkIn': DateFormat('hh:mm').format(DateTime.now()),''
                                 'checkOut': "--/--",
                                 'checkInLocation': location,
                               });
