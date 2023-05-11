@@ -38,13 +38,14 @@ dependencies:
   cloud_firestore: ^4.5.3
   shared_preferences: ^2.1.0
   font_awesome_flutter: ^10.4.0
-  slide_to_act: ^2.0.1
+
   intl: ^0.17.0
   month_year_picker: ^0.2.0+3
   geocoding: ^2.1.0
   location: ^4.4.0
   flutter_barcode_scanner: ^2.0.0
   flutter_launcher_icons: "^0.13.1"
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -56,6 +57,9 @@ dev_dependencies:
     sdk: flutter
 
 
+
+
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -65,8 +69,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon/RIT Logo.png"
-
+  image_path: "assets/icon/Black and White Minimalist Fashion Store Logo (4).png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
