@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:attendanceapp/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
-
 
 class TodayScreen extends StatefulWidget {
   const TodayScreen({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class _TodayScreenState extends State<TodayScreen> {
   String scanResult = " ";
   String officeCode = " ";
 
-  Color primary = const Color(0xffeef444c);
+  Color primary = Colors.green;
 
   @override
   void initState() {
@@ -35,7 +35,10 @@ class _TodayScreenState extends State<TodayScreen> {
   }
 
   void _getOfficeCode() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance.collection("Attributes").doc("Office1").get();
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection("Attributes")
+        .doc("Office1")
+        .get();
     setState(() {
       officeCode = snap['code'];
     });
@@ -51,7 +54,7 @@ class _TodayScreenState extends State<TodayScreen> {
         false,
         ScanMode.QR,
       );
-    } catch(e) {
+    } catch (e) {
       print("error");
     }
 
@@ -59,8 +62,8 @@ class _TodayScreenState extends State<TodayScreen> {
       scanResult = result;
     });
 
-    if(scanResult == officeCode) {
-      if(User.lat != 0) {
+    if (scanResult == officeCode) {
+      if (User.lat != 0) {
         _getLocation();
 
         QuerySnapshot snap = await FirebaseFirestore.instance
@@ -166,12 +169,13 @@ class _TodayScreenState extends State<TodayScreen> {
     }
   }
 
-
   void _getLocation() async {
-    List<Placemark> placemark = await placemarkFromCoordinates(User.lat, User.long);
+    List<Placemark> placemark =
+        await placemarkFromCoordinates(User.lat, User.long);
 
     setState(() {
-      location = "${placemark[0].street}, ${placemark[0].administrativeArea}, ${placemark[0].postalCode}, ${placemark[0].country}";
+      location =
+          "${placemark[0].street}, ${placemark[0].administrativeArea}, ${placemark[0].postalCode}, ${placemark[0].country}";
     });
   }
 
@@ -193,7 +197,7 @@ class _TodayScreenState extends State<TodayScreen> {
         checkIn = snap2['checkIn'];
         checkOut = snap2['checkOut'];
       });
-    } catch(e) {
+    } catch (e) {
       setState(() {
         checkIn = "--/--";
         checkOut = "--/--";
@@ -208,220 +212,225 @@ class _TodayScreenState extends State<TodayScreen> {
 
     return Scaffold(
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.only(top: 32),
-                child: Text(
-                  "Welcome,",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontFamily: "NexaRegular",
-                    fontSize: screenWidth / 20,
-                  ),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: const EdgeInsets.only(top: 40),
+            child: Text(
+              "Welcome,",
+              style: TextStyle(
+                color: Colors.green,
+                fontFamily: "NexaBold",
+                fontSize: screenWidth / 15,
+              ),
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Student " + User.studentId,
+              style: TextStyle(
+                fontFamily: "NexaBold",
+                fontSize: screenWidth / 18,
+              ),
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: const EdgeInsets.only(top: 32),
+            child: Text(
+              "Today's Status",
+              style: TextStyle(
+                fontFamily: "NexaBold",
+                fontSize: screenWidth / 12,
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 12, bottom: 32),
+            height: 150,
+            decoration: const BoxDecoration(
+              color: Colors.greenAccent,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  blurRadius: 10,
+                  offset: Offset(1, 4),
                 ),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Student " + User.studentId,
-                  style: TextStyle(
-                    fontFamily: "NexaBold",
-                    fontSize: screenWidth / 18,
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.only(top: 32),
-                child: Text(
-                  "Today's Status",
-                  style: TextStyle(
-                    fontFamily: "NexaBold",
-                    fontSize: screenWidth / 18,
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 12, bottom: 32),
-                height: 150,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      offset: Offset(2, 2),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Check In",
-                            style: TextStyle(
-                              fontFamily: "NexaRegular",
-                              fontSize: screenWidth / 20,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          Text(
-                            checkIn,
-                            style: TextStyle(
-                              fontFamily: "NexaBold",
-                              fontSize: screenWidth / 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Check Out",
-                            style: TextStyle(
-                              fontFamily: "NexaRegular",
-                              fontSize: screenWidth / 20,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          Text(
-                            checkOut,
-                            style: TextStyle(
-                              fontFamily: "NexaBold",
-                              fontSize: screenWidth / 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                  alignment: Alignment.centerLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      text: DateTime.now().day.toString(),
-                      style: TextStyle(
-                        color: primary,
-                        fontSize: screenWidth / 18,
-                        fontFamily: "NexaBold",
-                      ),
-                      children: [
-                        TextSpan(
-                          text: DateFormat(' MMMM yyyy').format(DateTime.now()),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: screenWidth / 20,
-                            fontFamily: "NexaBold",
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-              ),
-              StreamBuilder(
-                stream: Stream.periodic(const Duration(seconds: 1)),
-                builder: (context, snapshot) {
-                  return Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      DateFormat('hh:mm:ss a').format(DateTime.now()),
-                      style: TextStyle(
-                        fontFamily: "NexaRegular",
-                        fontSize: screenWidth / 20,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              checkOut == "--/--" ? Container(
-                margin: const EdgeInsets.only(top: 24, bottom: 12),
-
-              ) : Container(
-                margin: const EdgeInsets.only(top: 32, bottom: 32),
-                child: Text(
-                  "You have completed this day!",
-                  style: TextStyle(
-                    fontFamily: "NexaRegular",
-                    fontSize: screenWidth / 20,
-                    color: Colors.black54,
-                  ),
-                ),
-              ),
-              location != " " ? Text(
-                "Location: " + location,
-              ) : const SizedBox(),
-              GestureDetector(
-                onTap: () {
-                  scanQRandCheck();
-                },
-                child: Container(
-                  height: screenWidth / 2,
-                  width: screenWidth / 2,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        offset: Offset(2, 2),
-                        blurRadius: 10,
-                      ),
-                    ],
-                  ),
+              ],
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.expand,
-                            size: 70,
-                            color: primary,
-                          ),
-                          Icon(
-                            FontAwesomeIcons.camera,
-                            size: 25,
-                            color: primary,
-                          ),
-                        ],
+                      Text(
+                        "Check In",
+                        style: TextStyle(
+                          fontFamily: "NexaRegular",
+                          fontSize: screenWidth / 20,
+                          color: Colors.black,
+                        ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 8,),
-                        child: Text(
-                          checkIn == "--/--" ? "Scan to Check In" : "Scan to Check Out",
-                          style: TextStyle(
-                            fontFamily: "NexaRegular",
-                            fontSize: screenWidth / 20,
-                            color: Colors.black54,
-                          ),
+                      Text(
+                        checkIn,
+                        style: TextStyle(
+                          fontFamily: "NexaBold",
+                          fontSize: screenWidth / 18,
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Check Out",
+                        style: TextStyle(
+                          fontFamily: "NexaRegular",
+                          fontSize: screenWidth / 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        checkOut,
+                        style: TextStyle(
+                          fontFamily: "NexaBold",
+                          fontSize: screenWidth / 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        )
-    );
+          Container(
+              alignment: Alignment.centerLeft,
+              child: RichText(
+                text: TextSpan(
+                  text: DateTime.now().day.toString(),
+                  style: TextStyle(
+                    color: primary,
+                    fontSize: screenWidth / 18,
+                    fontFamily: "NexaBold",
+                  ),
+                  children: [
+                    TextSpan(
+                      text: DateFormat(' MMMM yyyy').format(DateTime.now()),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: screenWidth / 20,
+                        fontFamily: "NexaBold",
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+          StreamBuilder(
+            stream: Stream.periodic(const Duration(seconds: 1)),
+            builder: (context, snapshot) {
+              return Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  DateFormat('hh:mm:ss a').format(DateTime.now()),
+                  style: TextStyle(
+                    fontFamily: "NexaRegular",
+                    fontSize: screenWidth / 20,
+                    color: Colors.black,
+                  ),
+                ),
+              );
+            },
+          ),
+          checkOut == "--/--"
+              ? Container(
+                  margin: const EdgeInsets.only(top: 24, bottom: 12),
+                )
+              : Container(
+                  margin: const EdgeInsets.only(top: 32, bottom: 32),
+                  child: Text(
+                    "You have completed this day!",
+                    style: TextStyle(
+                      fontFamily: "NexaRegular",
+                      fontSize: screenWidth / 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+          location != " "
+              ? Text(
+                  "Location: " + location,
+                )
+              : const SizedBox(),
+          GestureDetector(
+            onTap: () {
+              scanQRandCheck();
+            },
+            child: Container(
+              height: screenWidth / 2,
+              width: screenWidth / 2,
+              decoration: BoxDecoration(
+                color: Colors.greenAccent,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.green,
+                    offset: Offset(1, 6),
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Icon(
+                        FontAwesomeIcons.expand,
+                        size: 70,
+                        color: Colors.black,
+                      ),
+                      Icon(
+                        FontAwesomeIcons.camera,
+                        size: 25,
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 8,
+                    ),
+                    child: Text(
+                      checkIn == "--/--"
+                          ? "Scan to Check In"
+                          : "Scan to Check Out",
+                      style: TextStyle(
+                        fontFamily: "NexaRegular",
+                        fontSize: screenWidth / 20,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ));
   }
 }
